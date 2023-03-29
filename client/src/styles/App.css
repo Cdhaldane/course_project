@@ -1,0 +1,124 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.Header {
+  background-color: lightcoral;
+  color: #333;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.Header-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Header-brand {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+}
+
+.Header-brand:hover {
+  color: #e5b30e;
+}
+
+.Header-list {
+  list-style: none;
+  display: flex;
+}
+
+.Header-item {
+  margin-right: 20px;
+}
+
+.Header-link {
+  color: #333;
+  text-decoration: none;
+  font-size: 1.2rem;
+}
+
+.Header-link:hover {
+  color: #e5b30e;
+}
+
+table {
+  border-collapse: collapse;
+  background-color: #ddd;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  font-size: 16px;
+}
+
+/* Add a border to the table */
+table,
+th,
+td {
+  border: 1px solid #ddd;
+}
+
+/* Add some padding to the table cells */
+th,
+td {
+  padding: 12px;
+}
+
+/* Style the table header */
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  text-align: left;
+}
+
+/* Style the table rows */
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #aaa;
+}
+
+
+/* Style the pagination */
+.TableList h2{
+  margin-left: 8%;
+}
+
+
+.table-collapsable {
+  background-color: lightblue;
+  border: none;
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
