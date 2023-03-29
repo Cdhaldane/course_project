@@ -127,7 +127,7 @@ async function generateDummyData() {
             const roID = i.toString()
             const roomID = hoID + roID;
             const roomNum = i + 1;
-            const capacity = faker.random.numeric(1);
+            const capacity = faker.random.numeric(1, { bannedDigits: ['0', '7', '8', '9'] });
             const price = faker.random.numeric(2);
             const views = ['City', 'Sea', 'Mountain'];
             const randomIndex = Math.floor(Math.random() * views.length);
@@ -286,6 +286,70 @@ app.get('/api/getHotel', async (req, res) => {
         res.sendStatus(500);
     }
 });
+
+app.get('/api/getRoom', async (req, res) => {
+    const hotelid = req.query.hotelid;
+
+    const query = `
+        SELECT * FROM room
+        WHERE room.hotelid = $1;
+    `;
+
+    const VALUES = [hotelid];
+
+    try {
+        const result = await db.query(query, VALUES);
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.sendStatus(500);
+    }
+});
+
+app.get('/api/getFormRooms', async (req, res) => {
+    const hotelid = req.query.hotelid;
+    const view = req.query.view;
+    const capacity = req.query.capacity;
+    const minPrice = req.query.minPrice;
+    const maxPrice = req.query.maxPrice;
+    const checkInDate = req.query.checkindate;
+    const checkOutDate = req.query.checkoutdate;
+  
+    let query = `SELECT * FROM room WHERE room.hotelid = $1`;
+    let values = [hotelid];
+  
+    if (view) {
+        query += ` AND room.view = $2`;
+        values.push(view);
+    }
+  
+    if (capacity) {
+        query += ` AND room.capacity = $${values.length + 1}`;
+        values.push(capacity);
+    }
+
+    if (minPrice)  {
+        query += ` AND room.price >= $${values.length + 1}`;
+        values.push(minPrice);
+    }
+
+    if (maxPrice) {
+        query += ` AND room.price <= $${values.length + 1}`;
+        values.push(maxPrice);
+    }
+
+    if (checkInDate && checkOutDate) {
+        query += ` AND room.id NOT IN (SELECT booking.roomid FROM booking WHERE booking.checkindate <= $${values.length + 1} AND booking.checkoutdate >= $${values.length + 2})`;
+    }
+    try {
+      const result = await db.query(query, values);
+      res.json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.sendStatus(500);
+    }
+  });
+
 
 
 

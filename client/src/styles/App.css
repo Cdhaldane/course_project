@@ -23,7 +23,7 @@ code {
 }
 
 .Header {
-  background-color: lightcoral;
+  background-color: #f1c40f;
   color: #333;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -43,7 +43,7 @@ code {
 }
 
 .Header-brand:hover {
-  color: #e5b30e;
+  color: white;
 }
 
 .Header-list {
@@ -62,7 +62,7 @@ code {
 }
 
 .Header-link:hover {
-  color: #e5b30e;
+  color: white;
 }
 
 table {
