@@ -8,15 +8,15 @@ function Header() {
       <nav className="Header-nav">
         <Link className="Header-brand" to="/">Vortex Hotels</Link>
         <ul className="Header-list">
-          <li className="Header-item">
+          {/* <li className="Header-item">
             <Link className="Header-link" to="/booking">My Booking</Link>
-          </li>
+          </li> */}
           <li className="Header-item">
-            <Link className="Header-link" to="/about">About Us</Link>
+            <Link className="Header-link" to="/tables">Tables</Link>
           </li>
-          <li className="Header-item">
+          {/* <li className="Header-item">
             <Link className="Header-link" to="/contact">Contact Us</Link>
-          </li>
+          </li> */}
         </ul>
       </nav>
     </header>

@@ -9,13 +9,12 @@ CREATE TABLE IF NOT EXISTS HotelChain (
 );
 
 CREATE TABLE IF NOT EXISTS Hotel (
-  HotelID VARCHAR(255),
+  HotelID SERIAL PRIMARY KEY,
   Address VARCHAR(255),
   Telephone VARCHAR(20),
   Email VARCHAR(255),
   Nrooms INT,
   COaddress VARCHAR(255),
-  PRIMARY KEY (HotelID),
   FOREIGN KEY (COaddress) REFERENCES HotelChain (COAddress)
 );
 
@@ -38,36 +37,37 @@ CREATE TABLE IF NOT EXISTS Customer (
 );
 
 CREATE TABLE IF NOT EXISTS Room (
+  RoomID VARCHAR(255) NOT NULL,
   HotelID INT NOT NULL,
   RoomNum INT NOT NULL,
   Capacity INT,
   Price DECIMAL(10, 2),
   View VARCHAR(255),
-  Extendable BOOLEAN,
+  Extendable VARCHAR(255),
   Amenities VARCHAR(255),
   Damages VARCHAR(255),
-  PRIMARY KEY (HotelID, RoomNum),
+  PRIMARY KEY (RoomID),
   FOREIGN KEY (HotelID) REFERENCES Hotel (HotelID)
 );
 
 CREATE TABLE IF NOT EXISTS Booking (
   ID SERIAL PRIMARY KEY,
   CustomerSIN VARCHAR(9),
-  RoomNum INT,
+  RoomID VARCHAR(255),
   BookingDate DATE,
   ChekInDate DATE,
   CheckOutDate DATE,
   FOREIGN KEY (CustomerSIN) REFERENCES Customer (SIN),
-  FOREIGN KEY (RoomNum) REFERENCES Room (RoomNum)
+  FOREIGN KEY (RoomID) REFERENCES Room (RoomID)
 );
 
 CREATE TABLE IF NOT EXISTS Renting (
   ID SERIAL PRIMARY KEY,
   CustomerSIN VARCHAR(9),
-  RoomNum INT,
+  RoomID VARCHAR(255),
   RentingDate DATE,
   ChekInDate DATE,
   CheckOutDate DATE,
   FOREIGN KEY (CustomerSIN) REFERENCES Customer (SIN),
-  FOREIGN KEY (RoomNum) REFERENCES Room (RoomNum)
+  FOREIGN KEY (RoomID) REFERENCES Room (RoomID)
 );

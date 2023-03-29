@@ -132,7 +132,9 @@ async function generateDummyData() {
             const views = ['City', 'Sea', 'Mountain'];
             const randomIndex = Math.floor(Math.random() * views.length);
             const view = views[randomIndex];
-            const extendable = faker.datatype.boolean();
+            const bools = ['Yes', 'No'];
+            const r = Math.floor(Math.random() * bools.length);
+            const extendable = bools[r];
             const amenitiesN = ['TV', 'Air Conditioning', 'Free Wi-Fi', 'Minibar', 'Balcony'];
             const random = Math.floor(Math.random() * amenitiesN.length);
             const amenities = amenitiesN[random];
@@ -268,8 +270,6 @@ app.get('/api/rentings', async (req, res) => {
 
 app.get('/api/getHotel', async (req, res) => {
     const coaddress = req.query.coaddress;
-
-    console.log(req.query)
 
     const query = `
         SELECT * FROM hotel
