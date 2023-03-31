@@ -17,7 +17,7 @@ const db = new pg.Pool({
     user: 'postgres',
     host: 'localhost',
     database: 'booking_system',
-    password: 'password',
+    password: '1234',
     port: 5432,
 });
 
@@ -123,11 +123,11 @@ async function generateDummyData() {
     for (const hotel of hotels) {
         const nRooms = hotel[3];
         for (let i = 1; i <= nRooms; i++) {
-            const hoID = hotel[4].toString()
-            const roID = i.toString()
-            const roomID = hoID + roID;
+           // const hoID = hotel[4].toString()
+           // const roID = i.toString()
+           // const roomID = hoID + roID;
             const roomNum = i + 1;
-            const capacity = faker.random.numeric(1, { bannedDigits: ['0', '7', '8', '9'] });
+            const capacity = faker.random.numeric(1);
             const price = faker.random.numeric(2);
             const views = ['City', 'Sea', 'Mountain'];
             const randomIndex = Math.floor(Math.random() * views.length);
@@ -142,51 +142,64 @@ async function generateDummyData() {
             const rando = Math.floor(Math.random() * damagesN.length);
             const damages = damagesN[rando];
 
-            rooms.push([roomID, roomNum, hotel[4], capacity, price, view, extendable, amenities, damages]);
+            rooms.push([roomNum, hotel[4], capacity, price, view, extendable, amenities, damages]);
         }
     }
 
     for (const room of rooms) {
-        await db.query('INSERT INTO Room (RoomID, RoomNum, HotelID, Capacity, Price, View, Extendable, Amenities, Damages) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)', room);
+        await db.query('INSERT INTO Room (RoomNum, HotelID, Capacity, Price, View, Extendable, Amenities, Damages) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)', room);
     }
 
 
     // Generate booking data
     const bookings = [];
-    for (let i = 0; i < 5; i++) {
-        const id = i + 1;
-        const randomIndex = Math.floor(Math.random() * customers.length);
-        const customerSin = customers[randomIndex][0];
-        const random = Math.floor(Math.random() * rooms.length);
-        const roomID = rooms[random][0];
-        const bookingDate = faker.date.between('2020-01-01', '2022-12-31');
-        const checkInDate = faker.date.between(bookingDate, new Date('2023-12-31'));
-        const checkOutDate = faker.date.between(checkInDate, new Date('2024-12-31'));
-        bookings.push([id, customerSin, roomID, bookingDate, checkInDate, checkOutDate]);
+    for (var i=0;i<2;i++) {
+        const hotel = hotels[i]
+        const nRooms = hotel[3];
+        const hotelid = hotel[4]; 
+        for (let i = 0; i < nRooms; i++) {
+            //const id = i + 1;
+            const randomIndex = Math.floor(Math.random() * customers.length);
+            const customerSin = customers[randomIndex][0];
+            // const random = Math.floor(Math.random() * rooms.length);
+            //const roomID = rooms[random][0];
+            const roomNum = i;
+            const bookingDate = faker.date.between('2020-01-01', '2022-12-31');
+            const checkInDate = faker.date.between(bookingDate, new Date('2023-12-31'));
+            const checkOutDate = faker.date.between(checkInDate, new Date('2024-12-31'));
+            bookings.push([customerSin, roomNum, hotelid, bookingDate, checkInDate, checkOutDate]);
+        }
     }
+    
 
     // Insert bookings into database
     for (const booking of bookings) {
-        await db.query('INSERT INTO Booking (ID, CustomerSIN, roomID, BookingDate, ChekInDate, CheckOutDate) VALUES ($1, $2, $3, $4, $5, $6)', booking);
+        await db.query('INSERT INTO Booking (ID, CustomerSIN, roomNum, hotelID, BookingDate, CheckInDate, CheckOutDate) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6)', booking);
     }
 
     // Generate renting data
     const rentings = [];
-    for (let i = 0; i < 5; i++) {
-        const id = i + 1;
-        const randomIndex = Math.floor(Math.random() * customers.length);
-        const customerSin = customers[randomIndex][0];
-        const random = Math.floor(Math.random() * rooms.length);
-        const roomID = rooms[random][0];
-        const rentingDate = faker.date.between('2020-01-01', '2022-12-31');
-        const checkInDate = faker.date.between(rentingDate, new Date('2023-12-31'));
-        const checkOutDate = faker.date.between(checkInDate, new Date('2024-12-31'));
-        rentings.push([id, customerSin, roomID, rentingDate, checkInDate, checkOutDate]);
+    for (var i=0;i<2;i++) {
+        const hotel = hotels[i]
+        const nRooms = hotel[3];
+        const hotelid = hotel[4]; 
+        for (let i = 0; i < nRooms; i++) {
+            //const id = i + 1;
+            const randomIndex = Math.floor(Math.random() * customers.length);
+            const customerSin = customers[randomIndex][0];
+            // const random = Math.floor(Math.random() * rooms.length);
+            //const roomID = rooms[random][0];
+            const roomNum = i;
+            const rentingDate = faker.date.between('2020-01-01', '2022-12-31');
+            const checkInDate = faker.date.between(rentingDate, new Date('2023-12-31'));
+            const checkOutDate = faker.date.between(checkInDate, new Date('2024-12-31'));
+            rentings.push([customerSin, roomNum, hotelid, rentingDate, checkInDate, checkOutDate]);
+        }
     }
 
     // Insert rentings into database
     for (const renting of rentings) {
-        await db.query('INSERT INTO Renting (ID, CustomerSIN, roomID, RentingDate, ChekInDate, CheckOutDate) VALUES ($1, $2, $3, $4, $5, $6)', renting);
+        await db.query('INSERT INTO Renting (ID, CustomerSIN, roomNum, hotelID, RentingDate, CheckInDate, CheckOutDate) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6)', renting);
     }
 
 
@@ -287,15 +300,19 @@ app.get('/api/getHotel', async (req, res) => {
     }
 });
 
-app.get('/api/getRoom', async (req, res) => {
-    const hotelid = req.query.hotelid;
 
-    const query = `
-        SELECT * FROM room
-        WHERE room.hotelid = $1;
-    `;
+//update database functions
+//insert booking history
+app.post('/api/addBooking',  async (req, res) => {
+    const customerSIN = req.body.customerSIN;
+    const bookingDate = req.body.bookingDate;
+    const checkInDate = req.body.checkInDate;
+    const checkOutDate = req.body.checkOutDate;
+    const roomNum = req.body.roomNum;
+    const hotelID = req.body.hotelID;
 
-    const VALUES = [hotelid];
+    const query = 'INSERT INTO Booking (ID, CustomerSIN, roomNum, hotelID, BookingDate, CheckInDate, CheckOutDate) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6)';
+    const VALUES = [customerSIN, roomNum, hotelID, bookingDate, checkInDate, checkOutDate];
 
     try {
         const result = await db.query(query, VALUES);
@@ -306,53 +323,47 @@ app.get('/api/getRoom', async (req, res) => {
     }
 });
 
-app.get('/api/getFormRooms', async (req, res) => {
-    const hotelid = req.query.hotelid;
-    const view = req.query.view;
-    const capacity = req.query.capacity;
-    const minPrice = req.query.minPrice;
-    const maxPrice = req.query.maxPrice;
-    const checkInDate = req.query.checkindate;
-    const checkOutDate = req.query.checkoutdate;
-  
-    let query = `SELECT * FROM room WHERE room.hotelid = $1`;
-    let values = [hotelid];
-  
-    if (view) {
-        query += ` AND room.view = $2`;
-        values.push(view);
-    }
-  
-    if (capacity) {
-        query += ` AND room.capacity = $${values.length + 1}`;
-        values.push(capacity);
-    }
 
-    if (minPrice)  {
-        query += ` AND room.price >= $${values.length + 1}`;
-        values.push(minPrice);
-    }
+//insert renting history
+app.post('/api/addRenting',  async (req, res) => {
+    const customerSIN = req.body.customerSIN;
+    const bookingDate = req.body.bookingDate;
+    const checkInDate = req.body.checkInDate;
+    const checkOutDate = req.body.checkOutDate;
+    const roomNum = req.body.roomNum;
+    const hotelID = req.body.hotelID;
 
-    if (maxPrice) {
-        query += ` AND room.price <= $${values.length + 1}`;
-        values.push(maxPrice);
-    }
+    const query =  'INSERT INTO Renting (ID, CustomerSIN, roomNum, hotelID, RentingDate, CheckInDate, CheckOutDate) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6)';
+   
+    const VALUES = [customerSIN, roomNum, hotelID, bookingDate, checkInDate, checkOutDate];
 
-    if (checkInDate && checkOutDate) {
-        query += ` AND room.id NOT IN (SELECT booking.roomid FROM booking WHERE booking.checkindate <= $${values.length + 1} AND booking.checkoutdate >= $${values.length + 2})`;
-    }
     try {
-      const result = await db.query(query, values);
-      res.json(result.rows);
+        const result = await db.query(query, VALUES);
+        res.json(result.rows);
     } catch (err) {
-      console.error(err);
-      res.sendStatus(500);
+        console.error(err);
+        res.sendStatus(500);
     }
-  });
+});
 
+//insert new customer
+app.post('/api/addCustomer', async (req, res) => {
+    const SIN = req.body.SIN;
+    const fullname = req.body.fullname;
+    const address = req.body.address;
+    const registDate = req.body.registDate;
 
+    const query = 'INSERT INTO Customer (SIN, FullName, Address, RegistDate) VALUES ($1, $2, $3, $4)';
+    const VALUES = [SIN, fullname, address, registDate];
 
-
+    try {
+        const result = await db.query(query, VALUES);
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.sendStatus(500);
+    }
+});
 
 
 // Start server
