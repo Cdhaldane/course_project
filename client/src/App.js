@@ -8,8 +8,9 @@ import Homepage from './Homepage';
 import './styles/App.css';
 import Header from './Header';
 import TableList from './Tables';
-// import BookingPage from './BookingPage';
-// import NotFoundPage from './NotFoundPage';
+import Booking from './Booking';
+import Employee from './Employee';
+import Views from './Views';
 
 function App() {
   return (
@@ -18,8 +19,9 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Homepage />} />
         <Route exact path="/tables" element={<TableList />} />
-        {/* <Route exact path="/booking" component={BookingPage} />
-        <Route component={NotFoundPage} /> */}
+        <Route exact path="/employee" element={<Employee />} />
+        <Route path='/booking/:indate/:outdate/:id/:address' element={<Booking />} />
+        <Route exact path="/views" element={<Views />} />
       </Routes>
     </BrowserRouter>
   );

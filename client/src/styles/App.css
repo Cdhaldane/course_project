@@ -113,12 +113,16 @@ tr:hover {
 
 
 .table-collapsable {
-  background-color: lightblue;
+  background-color: #ddd;
   border: none;
   padding: 10px;
   margin: 5px;
   cursor: pointer;
   font-size: 16px;
   border-radius: 4px;
+}
+
+.table-collapsable table {
+  border: 2px solid black;
 }
 

@@ -102,3 +102,69 @@
     position: relative;
     bottom: 10px;
   }
+
+  .Homepage-hotelCard {
+    margin-bottom: 20px;
+  }
+
+  .Homepage-hotelTitle {
+    background-color: #f1c40f;
+    border-radius: 4px;
+    padding: 10px;
+    color: white;
+    border: 3px solid whitesmoke;
+    border-radius: 4px;
+  }
+  
+  .Homepage-roomCard {
+    background-color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  
+  .Homepage-roomTitle {
+    margin-top: 0;
+    font-size: 18px;
+  }
+  
+  .Homepage-roomCard p {
+    margin: 10px 0;
+  }
+  
+  .Homepage-roomCard strong {
+    font-weight: bold;
+  }
+  
+  .Homepage-roomCard:last-child {
+    margin-bottom: 0;
+  }
+  
+  .Homepage-hotelCard img {
+    position: absolute;
+    transform: translate(230%, -25%);
+    width: 180px;
+    background-color: #f1c40f;
+    padding: 20px;
+    border-radius: 4px;
+    border: 5px solid whitesmoke;
+  }
+
+  .Homepage-hotelCard button {
+    position: absolute;
+    width: 230px;
+    height: 40px;
+    font-weight: 600;
+    font-size: 25px;
+    background-color: #f1c40f;
+    color: #333;
+    border: 3px solid whitesmoke;
+    border-radius: 4px;
+    transform: translate(230%, -75%);
+  }
+
+  .Homepage-hotelCard button:hover {
+    background-color: #e5b30e;
+    cursor: pointer;
+  }
