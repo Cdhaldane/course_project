@@ -44,13 +44,13 @@ async function generateDummyData() {
 
     // Generate hotel chain data
     const hotelChains = [];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 5; i++) {
         const name = faker.company.name();
         const coAddress = faker.address.streetAddress();
         const telephone = faker.phone.number('###-###-###')
         const email = faker.internet.email();
         const rank = faker.random.numeric(1, { bannedDigits: ['0', '6', '7', '8', '9'] });
-        const nHotels = faker.random.numeric(1, { bannedDigits: ['0', '5', '6', '7', '8', '9'] });
+        const nHotels = faker.random.numeric(1, { bannedDigits: ['0', '1', '2', '3', '4', '5', '6', '7'] });
         hotelChains.push([nHotels, name, coAddress, telephone, email, rank]);
     }
 
@@ -70,7 +70,7 @@ async function generateDummyData() {
             const address = faker.address.streetAddress();
             const telephone = faker.phone.number('###-###-###')
             const email = faker.internet.email();
-            const nRooms = faker.random.numeric(1);
+            const nRooms = faker.random.numeric(1) + i;
             const coAddress = hotel[2]
             hotels.push([address, telephone, email, nRooms, hotelID, coAddress]);
         }
